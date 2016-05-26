@@ -3,6 +3,10 @@
 var canvas;
 var context;
 
+//this variable stores the name of the
+//current shape the user is interested in drawing.
+var currentShape;
+
 //a flag to indicate whether the mouse button has been
 // held down prior to dragging
 var isDragging = false;
@@ -27,6 +31,7 @@ function setup() {
   context.strokeStyle = 'black';
   context.lineWidth = 1;
   context.lineCap = 'round';
+  context.fillStyle = 'green';
 
   //add event listeners to the canvas element
   canvas.addEventListener('mousedown', onDragStart, false);
@@ -63,9 +68,14 @@ function drawLine(mousePosition) {
   context.beginPath();
   context.moveTo(dragStartPoint.x, dragStartPoint.y);
   context.lineTo(mousePosition.x, mousePosition.y);
-  context.stroke();
 }
 
+/*
+ * Calculates the straight line distance between 
+ * 2 cartesian coordinates
+ * @param {type} mousePosition
+ * @returns {Number}
+ */
 function getDistanceBetweenPoints(mousePosition) {
   return Math.sqrt(
           Math.pow((dragStartPoint.x - mousePosition.x), 2) + Math.pow((dragStartPoint.y - mousePosition.y), 2)
@@ -82,7 +92,6 @@ function drawSemiCircle(mousePosition) {
   context.beginPath();
   context.arc(dragStartPoint.x, dragStartPoint.y, radius, 0, Math.PI, false);
   context.closePath();
-  context.stroke();
 }
 
 /*
@@ -99,7 +108,6 @@ function drawCircle(mousePosition) {
   var radius = getDistanceBetweenPoints(mousePosition);
   context.beginPath();
   context.arc(dragStartPoint.x, dragStartPoint.y, radius, 0, 2 * Math.PI, false);
-  context.stroke();
 }
 
 /*
@@ -119,7 +127,6 @@ function drawRectangle(mousePosition) {
   context.beginPath();
   context.clearRect(dragStartPoint.x, dragStartPoint.y, width, height);
   context.rect(dragStartPoint.x, dragStartPoint.y, width, height);
-  context.stroke();
 }
 
 /*
@@ -152,9 +159,50 @@ function drawPolygon(mousePosition, sides, angle) {
   }
 
   context.closePath();
-  context.stroke();
 }
 
+/*
+ * drawShape is a helper method that enables 
+ * us to dynamically choose what kind
+ * of shape we want to draw.
+ * @param {type} mousePosition
+ * @returns {undefined}
+ */
+function drawShape(mousePosition) {
+  switch (currentShape) {
+    case 'line':
+      drawLine(mousePosition);
+      break;
+    case 'semicircle':
+      drawSemiCircle(mousePosition);
+      break;
+    case 'circle':
+      drawCircle(mousePosition);
+      break;
+    case 'triangle':
+      drawPolygon(mousePosition, 3, Math.PI / 4);
+      break;
+    case 'rectangle':
+      drawRectangle(mousePosition);
+      break;
+    case 'pentagon':
+      drawPolygon(mousePosition, 5, Math.PI / 4);
+      break;
+    case 'hexagon':
+      drawPolygon(mousePosition, 6, Math.PI / 4);
+      break;
+    default:
+      drawLine(mousePosition);
+  }
+  var fill = document.getElementById('fillBox');
+
+  //fill the shape if the fill checkbox is checked
+  if (fill.check) {
+    contenxt.fill();
+  } else {
+    context.stroke();
+  }
+}
 /*
  * The takeSnapshot function captures an image
  * of the canvas along with the bitmap drawn on it
@@ -171,6 +219,16 @@ function getCanvasSnapShot() {
  */
 function redrawSnapshot() {
   context.putImageData(snapshot, 0, 0);
+}
+
+/*
+ * This functions enables us to update
+ * the value of the currentShape variable
+ * @param {type} shape
+ * @returns {undefined}
+ */
+function setCurrentShape(shape) {
+  currentShape = shape;
 }
 /*
  * The onDragStart method is called once the mouse 
@@ -197,11 +255,7 @@ function onDrag(event) {
     //so that we do not have multiple lines
     redrawSnapshot();
 
-    dragStopPoint = getMouseCoordinates(event);
-    //drawLine(dragStopPoint);
-    //drawPolygon(dragStopPoint, 6, Math.PI/4);
-    //drawRectangle(dragStopPoint);
-    drawSemiCircle(dragStopPoint);
+    drawShape(getMouseCoordinates(event));
   }
 }
 
@@ -214,11 +268,7 @@ function onDragStop(event) {
   //we are redrawing the snapshot for the same reason
   //as in the onDrag() function
   redrawSnapshot();
-  dragStopPoint = getMouseCoordinates(event);
-  //drawLine(dragStopPoint);
-  //drawPolygon(dragStopPoint, 6, Math.PI/4);
-  //drawRectangle(dragStopPoint);
-  drawSemiCircle(dragStopPoint);
+  drawShape(getMouseCoordinates(event));
 }
 
 //Test program
