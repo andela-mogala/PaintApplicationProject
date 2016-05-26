@@ -66,6 +66,25 @@ function drawLine(mousePosition) {
   context.stroke();
 }
 
+function getDistanceBetweenPoints(mousePosition) {
+  return Math.sqrt(
+          Math.pow((dragStartPoint.x - mousePosition.x), 2) + Math.pow((dragStartPoint.y - mousePosition.y), 2)
+          );
+}
+
+/*
+ * The drawSemiCircle method simple renders a semi circle
+ * @param {type} mousePosition
+ * @returns {undefined}
+ */
+function drawSemiCircle(mousePosition) {
+  var radius = getDistanceBetweenPoints(mousePosition);
+  context.beginPath();
+  context.arc(dragStartPoint.x, dragStartPoint.y, radius, 0, Math.PI, false);
+  context.closePath();
+  context.stroke();
+}
+
 /*
  * The drawCircle function requires a parameter which is
  * the current mouse position. Using a formula for calculating
@@ -75,12 +94,9 @@ function drawLine(mousePosition) {
  * @returns {undefined}
  */
 function drawCircle(mousePosition) {
-  //(The radius will be determined by finding the distance between
-  //the point where the mouse is clicked down and where the mouse
-  //is released).
-  var radius = Math.sqrt(
-          Math.pow((dragStartPoint.x - mousePosition.x), 2) + Math.pow((dragStartPoint.y - mousePosition.y), 2)
-          );
+  //(The radius is same as the distance between 
+  //the dragStart and dragStop
+  var radius = getDistanceBetweenPoints(mousePosition);
   context.beginPath();
   context.arc(dragStartPoint.x, dragStartPoint.y, radius, 0, 2 * Math.PI, false);
   context.stroke();
@@ -92,14 +108,14 @@ function drawCircle(mousePosition) {
  * @param {type} mousePosition
  * @returns {undefined}
  */
-function drawRectangle(mousePosition){
+function drawRectangle(mousePosition) {
   //fetch the width of the rectangle by substracting the
   //current mouse position from the point where mouse drag
   //commenced
   var width = mousePosition.x - dragStartPoint.x;
   //similar process for the height of the rectangle
   var height = mousePosition.y - dragStartPoint.y;
-  
+
   context.beginPath();
   context.clearRect(dragStartPoint.x, dragStartPoint.y, width, height);
   context.rect(dragStartPoint.x, dragStartPoint.y, width, height);
@@ -184,7 +200,8 @@ function onDrag(event) {
     dragStopPoint = getMouseCoordinates(event);
     //drawLine(dragStopPoint);
     //drawPolygon(dragStopPoint, 6, Math.PI/4);
-    drawRectangle(dragStopPoint);
+    //drawRectangle(dragStopPoint);
+    drawSemiCircle(dragStopPoint);
   }
 }
 
@@ -200,7 +217,8 @@ function onDragStop(event) {
   dragStopPoint = getMouseCoordinates(event);
   //drawLine(dragStopPoint);
   //drawPolygon(dragStopPoint, 6, Math.PI/4);
-  drawRectangle(dragStopPoint);
+  //drawRectangle(dragStopPoint);
+  drawSemiCircle(dragStopPoint);
 }
 
 //Test program
