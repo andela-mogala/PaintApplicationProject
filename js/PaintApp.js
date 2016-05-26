@@ -87,6 +87,26 @@ function drawCircle(mousePosition) {
 }
 
 /*
+ * The drawRectangle function renders a rectangle based
+ * on the startpoint and end point of the mouse drag.
+ * @param {type} mousePosition
+ * @returns {undefined}
+ */
+function drawRectangle(mousePosition){
+  //fetch the width of the rectangle by substracting the
+  //current mouse position from the point where mouse drag
+  //commenced
+  var width = mousePosition.x - dragStartPoint.x;
+  //similar process for the height of the rectangle
+  var height = mousePosition.y - dragStartPoint.y;
+  
+  context.beginPath();
+  context.clearRect(dragStartPoint.x, dragStartPoint.y, width, height);
+  context.rect(dragStartPoint.x, dragStartPoint.y, width, height);
+  context.stroke();
+}
+
+/*
  * The drawPolygon function is a reusable function
  * that can render any shape irrespective of the number
  * of sides
@@ -163,7 +183,8 @@ function onDrag(event) {
 
     dragStopPoint = getMouseCoordinates(event);
     //drawLine(dragStopPoint);
-    drawPolygon(dragStopPoint, 6, Math.PI/4);
+    //drawPolygon(dragStopPoint, 6, Math.PI/4);
+    drawRectangle(dragStopPoint);
   }
 }
 
@@ -178,7 +199,8 @@ function onDragStop(event) {
   redrawSnapshot();
   dragStopPoint = getMouseCoordinates(event);
   //drawLine(dragStopPoint);
-  drawPolygon(dragStopPoint, 6, Math.PI/4);
+  //drawPolygon(dragStopPoint, 6, Math.PI/4);
+  drawRectangle(dragStopPoint);
 }
 
 //Test program
