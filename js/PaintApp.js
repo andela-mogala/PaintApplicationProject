@@ -87,6 +87,39 @@ function drawCircle(mousePosition) {
 }
 
 /*
+ * The drawPolygon function is a reusable function
+ * that can render any shape irrespective of the number
+ * of sides
+ * @param {type} mousePosition
+ * @param {type} sides
+ * @param {type} angle
+ * @returns {undefined}
+ */
+function drawPolygon(mousePosition, sides, angle) {
+  var coordinates = [];
+  //to draw any shape we will have to inscribe that shape
+  //in a circle. Hence we need to have a radius for the circle
+  var radius = Math.sqrt(Math.pow((dragStartPoint.x - mousePosition.x), 2) + Math.pow((dragStartPoint.y - mousePosition.y), 2));
+
+  //determine the coordinates of the edges of the shape
+  //so as to be able to draw a lines to connect these points
+  for (var index = 0; index < sides; index++) {
+    coordinates.push({x: dragStartPoint.x + radius * Math.cos(angle), y: dragStartPoint.y - radius * Math.sin(angle)});
+    angle += (2 * Math.PI) / sides;
+  }
+
+  context.beginPath();
+  context.moveTo(coordinates[0].x, coordinates[0].y);
+  //draw lines to connect all the points
+  for (var index = 1; index < sides; index++) {
+    context.lineTo(coordinates[index].x, coordinates[index].y);
+  }
+
+  context.closePath();
+  context.stroke();
+}
+
+/*
  * The takeSnapshot function captures an image
  * of the canvas along with the bitmap drawn on it
  * @returns {undefined}
@@ -130,10 +163,9 @@ function onDrag(event) {
 
     dragStopPoint = getMouseCoordinates(event);
     //drawLine(dragStopPoint);
-    drawCircle(dragStopPoint);
+    drawPolygon(dragStopPoint, 6, Math.PI/4);
   }
 }
-;
 
 /*
  * The onDragStop method is called when the mouse
@@ -146,9 +178,8 @@ function onDragStop(event) {
   redrawSnapshot();
   dragStopPoint = getMouseCoordinates(event);
   //drawLine(dragStopPoint);
-  drawCircle(dragStopPoint);
+  drawPolygon(dragStopPoint, 6, Math.PI/4);
 }
-;
 
 //Test program
 setup();
