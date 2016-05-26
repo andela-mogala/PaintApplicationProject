@@ -31,7 +31,6 @@ function setup() {
   context.strokeStyle = 'black';
   context.lineWidth = 1;
   context.lineCap = 'round';
-  context.fillStyle = 'green';
 
   //add event listeners to the canvas element
   canvas.addEventListener('mousedown', onDragStart, false);
@@ -197,9 +196,11 @@ function drawShape(mousePosition) {
   var fill = document.getElementById('fillBox');
 
   //fill the shape if the fill checkbox is checked
-  if (fill.check) {
-    contenxt.fill();
+  if (fill.checked && currentShape !== 'line') {
+    context.fillStyle = document.getElementById('colorBox').value;
+    context.fill();
   } else {
+    context.strokeStyle = document.getElementById('colorBox').value;
     context.stroke();
   }
 }
