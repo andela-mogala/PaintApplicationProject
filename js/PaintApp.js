@@ -55,6 +55,16 @@ function getMouseCoordinates(event) {
   return canvasCoords;
 }
 
+/*The function dynamically sets the stroke value
+ * for the brush
+ * 
+ * @returns {undefined}
+ */
+function setLineWidth(){
+  var value = document.getElementById('strokeBox').value;
+  value = parseInt(value);
+  context.lineWidth = value;
+}
 /*
  *This function required the current mouse position
  *as a parameter and uses it to draw a straight line.
@@ -146,7 +156,7 @@ function drawPolygon(mousePosition, sides, angle) {
   //determine the coordinates of the edges of the shape
   //so as to be able to draw a lines to connect these points
   for (var index = 0; index < sides; index++) {
-    coordinates.push({x: dragStartPoint.x + radius * Math.cos(angle), y: dragStartPoint.y - radius * Math.sin(angle)});
+    coordinates.push({x: dragStartPoint.x + radius * Math.cos(angle), y: dragStartPoint.y + radius * Math.sin(angle)});
     angle += (2 * Math.PI) / sides;
   }
 
@@ -179,16 +189,16 @@ function drawShape(mousePosition) {
       drawCircle(mousePosition);
       break;
     case 'triangle':
-      drawPolygon(mousePosition, 3, Math.PI / 4);
+      drawPolygon(mousePosition, 3, 0.65 * Math.PI / 4);
       break;
     case 'rectangle':
       drawRectangle(mousePosition);
       break;
     case 'pentagon':
-      drawPolygon(mousePosition, 5, Math.PI / 4);
+      drawPolygon(mousePosition, 5, 1.15 * Math.PI / 4);
       break;
     case 'hexagon':
-      drawPolygon(mousePosition, 6, Math.PI / 4);
+      drawPolygon(mousePosition, 6, 0.65 * Math.PI / 4);
       break;
     default:
       drawLine(mousePosition);
@@ -198,8 +208,10 @@ function drawShape(mousePosition) {
   //fill the shape if the fill checkbox is checked
   if (fill.checked && currentShape !== 'line') {
     context.fillStyle = document.getElementById('colorBox').value;
+    setLineWidth();
     context.fill();
   } else {
+    setLineWidth();
     context.strokeStyle = document.getElementById('colorBox').value;
     context.stroke();
   }
@@ -272,5 +284,13 @@ function onDragStop(event) {
   drawShape(getMouseCoordinates(event));
 }
 
+/*
+ * This function creates a snapshot of the canvas image
+ * and displays it on a new window
+ */
+function saveImage() {
+  var data = canvas.toDataURL();
+  window.open(data, '_blank', 'location=0, menubar=0');
+}
 //Test program
 setup();
