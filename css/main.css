@@ -1,0 +1,77 @@
+/* 
+    Created on : May 26, 2016, 4:13:07 AM
+    Author     : OGALA MICHAEL
+*/
+*{
+  border:0;
+  padding:0;
+  margin:0;
+}
+
+body{
+  background-color: black;
+  font-family: sans-serif;
+}
+
+.container{
+  width: 90%;
+  margin: auto;
+}
+
+.container>header>h1{
+  font-size: 3em;
+  color: white;
+  text-align: center;
+  font-weight: bolder;
+}
+
+canvas{
+  position: absolute;
+  top: 100px;
+  left:200px;
+  border: 1px solid gray;
+  background-color: white;
+  cursor: crosshair;
+}
+
+#controls{
+  position: absolute;
+  top:100px;
+  left:5px;
+  padding:10px;
+  border: 1px solid gray;
+  background-color: lightskyblue;
+  border-radius: 5px;
+  box-shadow: 2px 2px 12px lightskyblue;
+}
+
+section#controls>div{
+  margin: 10px 0;
+}
+
+div>button{
+  width: 100px;
+  padding: 10px;
+  outline: none;
+  border: none;
+  border-radius: 15px;
+}
+
+div>button:hover{
+  background-color: rgba(0, 0, 0, .5);
+}
+
+div.options>button{
+  border-radius: 5px;
+  padding: 5px;
+  width: 50px;
+  color: white;
+  background: rgb(50,50,50);
+}
+
+div.options>button:hover{
+  padding: 5px;
+  width: 50px;
+  color: white;
+  background: rgba(70, 70, 70, .7);
+}

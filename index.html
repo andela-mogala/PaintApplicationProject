@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Paint Application</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="css/main.css"/>
+  </head>
+  <body>
+    <div class="container">
+
+      <section id="controls">
+        <div>
+          <label>Fill: <input id="fillBox" type="checkbox" checked="checked"></label>
+        </div>
+
+        <div>
+          <label>Color: <input id="colorBox" type="color"></label>
+        </div>
+
+        <div class="options">
+          <button id="pickImage">Image</button>&nbsp;<button id="save" onclick="saveImage()">Save</button>
+        </div>
+
+        <div>
+          <label>Stroke</label>
+          <select id="strokeBox">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+          </select>
+        </div>
+        <div>
+          <button onclick="setCurrentShape('line');">Line</button>
+        </div>
+
+        <div>
+          <button onclick="setCurrentShape('semicircle');">SemiCircle</button>
+        </div>
+
+        <div>
+          <button onclick="setCurrentShape('circle');">Circle</button>
+        </div>
+
+        <div>
+          <button onclick="setCurrentShape('triangle');">Triangle</button>
+        </div>
+
+        <div>
+          <button onclick="setCurrentShape('rectangle');">Rectangle</button>
+        </div>
+
+        <div>
+          <button onclick="setCurrentShape('pentagon');">Pentagon</button>
+        </div>
+
+        <div>
+          <button onclick="setCurrentShape('hexagon');">Hexagon</button>
+        </div>
+      </section>
+
+      <canvas id="canvas" width="900" height="500"></canvas>
+
+
+    </div>
+    <script src="js/PaintApp.js"></script>
+  </body>
+</html>
